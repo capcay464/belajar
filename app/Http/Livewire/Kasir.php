@@ -4,6 +4,7 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Product as ProductModel;
+use Carbon\Carbon;
 
 class Kasir extends Component
 {
@@ -63,5 +64,92 @@ class Kasir extends Component
             'cart' => $cartData,
             'summary' => $summary
         ]);
+    }
+
+    public function addItem($id){
+
+        $rowId = "Cart".$id;
+        $cart = \Cart::session(Auth()->id())->getContent();
+        $cekItemId = $cart->whereIn('id', $rowId);
+
+        if($cekItemId->isNotEmpty()){
+
+            \Cart::session(Auth()->id())->update($rowId, [
+                'quantity' => [
+                    'relative' => true,
+                    'value' => 1
+                ]
+                
+            ]);
+            
+        }else {
+            $product = ProductModel::findOrFail($id);
+            \Cart::session(Auth()->id())->add([
+                'id' => "Cart".$product->id,
+                'name' => $product->name,
+                'price' => $product->price,
+                'quantity' => 1,
+                'attributes' => [
+                    'added_at' => Carbon::now()
+                ],
+            ]);
+        }
+    }
+
+    public function enableTax(){
+        $this->tax = "+10%";
+    }
+    public function disableTax(){
+        $this->tax = "0%";
+    }
+
+    public function tambahItem($rowId){
+        
+        $idProduct = substr($rowId, 4,5);
+        $product = ProductModel::find($idProduct);
+
+        $cart = \Cart::session(Auth()->id())->getContent();
+        $cekItem = $cart->whereIn('id', $rowId);
+
+        if($product->qty == $cekItem[$rowId]->quantity){
+            session()->flash('error', '*Jumlah item kurang');
+        } else {
+            \Cart::session(Auth()->id())->update($rowId, [
+                'quantity' => [
+                    'relative' => true,
+                    'value' => 1
+                ]
+            ]);
+        }
+
+           
+        
+    }
+
+    public function kurangItem($rowId){
+        
+        $idProduct = substr($rowId, 4,5);
+        $product = ProductModel::find($idProduct);
+
+        $cart = \Cart::session(Auth()->id())->getContent();
+        $cekItem = $cart->whereIn('id', $rowId);
+
+        if($cekItem[$rowId]->quantity == 1){
+            $this->hapusItem($rowId);
+        } else {
+            \Cart::session(Auth()->id())->update($rowId, [
+                'quantity' => [
+                    'relative' => true,
+                    'value' => -1
+                ]
+            ]);
+        }
+        
+       
+    
+    }
+
+    public function hapusItem($rowId){
+        \Cart::session(Auth()->id())->remove($rowId);
     }
 }
