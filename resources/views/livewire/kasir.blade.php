@@ -2,7 +2,10 @@
     <div class="col-md-8">
         <div class="card">
             <div class="card-body">
-                <h2 class="font-weight-bold">Product List</h2>
+                <div class="row mb-2">
+                    <div class="col-md-5"><h2 class="font-weight-bold">Product List</h2></div>
+                    <div class="col-md-7"><input wire:model="search" type="text" class="form-control" placeholder="Cari Barang...."></div>
+                </div>
                 <div class="row">
                     @foreach($products as $product)
                         <div class="col-md-3 mb-3">
@@ -17,6 +20,9 @@
                             </div>
                         </div>
                     @endforeach
+                </div>
+                <div style="display:flex;justify-content:center">
+                    {{$products->links()}}
                 </div>
             </div>
          </div>
@@ -45,7 +51,7 @@
                                     <button wire:click="tambahItem('{{$cart['rowId']}}')" class="btn btn-success btn-sm mr-1 ml-auto" style="float: right">+</button>
                                     
                                      </td>
-                                    <td>{{$cart['price']}}</td>
+                                    <td>Rp {{number_format($cart['price'],2,',','.')}}</td>
                                 </tr>
                             @empty
                                 <td colspan="3"><h6 class="text-center">Empty Cart</h6></td>    
@@ -62,9 +68,9 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="font-weight-bold">Cart Summary</h4>
-                    <h5 class="font-weight-semibold">Sub Total : {{$summary['sub_total']}}</h5>
-                    <h5 class="font-weight-semibold">Pajak (10%) : {{$summary['pajak']}}</h5>
-                    <h5 class="font-weight-semibold">Total : {{$summary['total']}}</h5>
+                    <h5 class="font-weight-semibold">Sub Total : Rp {{number_format($summary['sub_total'],2,',','.')}}</h5>
+                    <h5 class="font-weight-semibold">Pajak (10%) : Rp {{number_format($summary['pajak'],2,',','.')}}</h5>
+                    <h5 class="font-weight-semibold">Total : Rp {{number_format($summary['total'],2,',','.')}}</h5>
                     <div>
                         <button wire:click="enableTax" class="btn btn-primary btn-block">Dengan Pajak</button>
                         <button wire:click="disableTax" class="btn btn-danger btn-block">Hapus Pajak</button>
