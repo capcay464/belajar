@@ -32,13 +32,13 @@
                 </a>
                 @auth
                 <a class="navbar-brand" href="{{ url('/home') }}">
-                    Home
+                <i class="fas fa-home fa-sm"></i> Home
                 </a>
                 <a class="navbar-brand" href="{{ url('/products') }}">
-                    Barang
+                <i class="fas fa-tshirt fa-sm"></i> Barang
                 </a>
                 <a class="navbar-brand" href="{{ url('/kasir') }}">
-                    Kasir
+                <i class="fas fa-shopping-cart fa-sm"></i> Kasir
                 </a>
                 @endauth
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">

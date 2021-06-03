@@ -13,7 +13,7 @@ Route::group(['middleware' => 'guest'], function (){
     Route::get('/login', Login::class)->name('login');
     Route::get('/register', Register::class)->name('register');
     Route::get('/', function () {
-        return view('welcome');
+        return view('login');
     });
 });
 
@@ -22,6 +22,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/kasir', Kasir::class);
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
     Route::get('/logout', Logout::class)->name('logout');
+    Route::get('/', function () {
+        return view('home');
+    });
 });
 
 
