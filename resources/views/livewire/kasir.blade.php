@@ -4,7 +4,7 @@
             <div class="card-header bg-white">
             <div class="row">
                     <div class="col-md-5"><h3 class="font-weight-bold">Product List</h3></div>
-                    <div class="col-md-7"><input wire:model="search" type="text" class="form-control" placeholder="Cari Barang...."></div>
+                    <div class="col-md-6"><input wire:model="search" type="text" class="form-control" placeholder="Cari Barang...."></div>
                 </div>
             </div>
             <div class="card-body">
@@ -18,8 +18,10 @@
                                     <button wire:click="addItem({{$product->id}})" class="btn btn-primary btn-sm" style="position:absolute;top:0;right:0;padding: 10px 15px"><i class="fas fa-cart-plus fa-1x"></i></button>
                                 </div>
                                 <div class="card-footer bg-white" style="padding-bottom:5px">
-                                    <h6 class="text-center font-weight-bold">{{$product->name}}</h6>
-                                    <h6 class="text-center font-weight-bold" style="color:gray">Rp {{number_format($product->price,2,',','.')}}</h6>
+                                    <h5 >{{$product->name}}</h5>
+                                    <h6 class="font-weight-bold">Rp {{number_format($product->price,2,',','.')}}</h6>
+                                    <h6 class="font-weight-bold" style="color:gray">{{$product->category}}</h6>
+                                    
                                     
                                     
                                 </div>
@@ -83,7 +85,7 @@
                     @endif
                     </h6>
                 </div>
-            <div class="card">
+            <div class="card mt-4">
                 <div class="card-body">
                     <h4 class="font-weight-bold">Cart Summary</h4>
                     <h5 class="font-weight-semibold">Sub Total : Rp {{number_format($summary['sub_total'],2,',','.')}}</h5>
@@ -94,13 +96,69 @@
                         <div class="col-sm-6"><button wire:click="disableTax" class="btn btn-info btn-block btn-sm">Hapus Pajak</button></div>
                         
                     </div>
-                    <div class="mt-4">
-                        <button class="btn btn-success btn-block"><i class="fas fa-save fa-lg"></i> Simpan Transaksi</button>
-                        
+
+                    <div class="form-group mt-4">
+                        <input type="number" wire:model="payment" class="form-control" id="payment" placeholder="Masukan jumlah pembayaran pelanggan">
+                        <input type="hidden" id="total" value="{{$summary['total']}}">
                     </div>
+
+
+                    <form wire:submit.prevent="handleSubmit">
+                        <div>
+                            <label>Pembayaran</label>
+                            <h1 id="paymentText" wire:ignore>Rp. 0</h1>
+                        </div>
+                        
+                        <div>
+                            <label>Kembalian</label>
+                            <h1 id="kembalianText" wire:ignore>Rp. 0</h1>
+                        </div>
+
+                        <div class="mt-4">
+                            <button wire:ignore type="submit" id="saveButton" disabled class="btn btn-success btn-block"><i class="fas fa-save fa-lg"></i> Simpan Transaksi</button>
+                            
+                        </div>
+                    </form>
                 </div>
                 
             </div>
          </div>
     </div>
 </div>
+
+@push('script-custom')
+
+    <script>
+         payment.oninput = () => {
+            const paymentAmount = document.getElementById("payment").value
+            const totalAmount = document.getElementById("total").value
+
+            const kembalian = paymentAmount - totalAmount
+
+            document.getElementById("kembalianText").innerHTML = `Rp ${rupiah(kembalian)} ,00`
+            document.getElementById("paymentText").innerHTML = `Rp ${rupiah(paymentAmount)} ,00`
+
+            const saveButton =  document.getElementById("saveButton")
+            if(kembalian < 0){
+                saveButton.disabled = true
+            }else{
+                saveButton.disabled = false
+            }
+           
+          
+        }
+        const rupiah = (angka) => {
+            const numberString = angka.toString()
+            const split = numberString.split(',')
+            const sisa = split[0].length % 3
+            let rupiah = split[0].substr(0, sisa)
+            const ribuan = split[0].substr(sisa).match(/\d{1,3}/gi)
+            if(ribuan){
+                const separator = sisa ? '.' : ''
+                rupiah += separator + ribuan.join('.')
+            }
+            return split[1] != undefined ? rupiah + ',' + split[1] : rupiah
+        }
+    </script>
+
+@endpush

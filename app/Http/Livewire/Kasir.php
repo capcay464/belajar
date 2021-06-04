@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Product as ProductModel;
 use Carbon\Carbon;
 use Livewire\WithPagination;
+use DB;
 
 class Kasir extends Component
 {
@@ -18,15 +19,20 @@ class Kasir extends Component
 
     public $search;
 
+    public $payment = "";
+
     public function updatingSearch()
     {
         $this->resetPage();
     }
 
+
+
     public function render()
     {
 
-        $products = ProductModel::where('name', 'like', '%'.$this->search.'%')->orderBy('created_at', 'DESC')->paginate(12);
+        $products = ProductModel::where('name','like', '%'.$this->search.'%')->orderBy('created_at', 'DESC')->paginate(12);
+        
 
         $condition = new \Darryldecode\Cart\CartCondition([
             'name' => 'pajak',
@@ -170,5 +176,43 @@ class Kasir extends Component
 
     public function hapusItem($rowId){
         \Cart::session(Auth()->id())->remove($rowId);
+    }
+
+    public function handleSubmit() {
+        $cartTotal = \Cart::session(Auth()->id())->getTotal();
+        $bayar = $this->payment;
+        $kembalian = (int) $bayar - (int) $cartTotal;
+
+
+        if($kembalian >= 0){
+            DB::beginTransaction();
+            try {
+                
+                $allCart = \Cart::session(Auth()->id())->getContent();
+
+                $filterCart = $allCart->map(function ($item) {
+                    return [
+                        'id' => substr($item->id, 4,5 ),
+                        'quantity' => $item->quantity
+                    ];
+                });
+
+                foreach ($filterCart as $cart) {
+                   $product = ProductModel::find($cart['id']);
+
+                   if ($product->qty === 0) {
+                     return session()->flash('error', 'Jumlah item kosong');
+                   }
+
+                   $product->decrement('qty', $cart['quantity']);
+                }
+
+
+                DB::commit();
+            } catch (\Throwable $th) {
+                DB::rollback();
+                return session()->flash('error', $th);
+            }
+        }
     }
 }
