@@ -15,7 +15,7 @@
                             <div class="card" wire:click="addItem({{$product->id}})" style="cursor:pointer">
                                 <div class="card-body">
                                     <img src="{{asset('storage/images/'.$product->image)}}" alt="Product" style="object-fit: contain; width:100%; height:140px">
-                                    <button wire:click="addItem({{$product->id}})" class="btn btn-primary btn-sm" style="position:absolute;top:0;right:0;padding: 10px 15px"><i class="fas fa-cart-plus fa-1x"></i></button>
+                                    <button class="btn btn-primary btn-sm" style="position:absolute;top:0;right:0;padding: 10px 15px"><i class="fas fa-cart-plus fa-1x"></i></button>
                                 </div>
                                 <div class="card-footer bg-white" style="padding-bottom:5px">
                                     <h5 >{{$product->name}}</h5>

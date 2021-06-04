@@ -11,7 +11,7 @@
                         <th>No</th>
                         <th>Name</th>
                         <th>Category</th>
-                        <th width="20%">Image</th>
+                        <th width="10%">Image</th>
                         <th>Description</th>
                         <th>Qty</th>
                         <th>Price</th>
