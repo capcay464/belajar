@@ -2,9 +2,11 @@
    <div class = "row">
          <div class="col-md-8">
          
-         <div class="card">
+         
+            <div class="card">
             <div class="card-body">
-            <h2 class="font-weight-bold mb-3">Product List</h2>
+            <h2 class="font-weight-bold mb-3">List Produk</h2>
+           
             <table class="table table-bordered table-hovered table-striped">
                 <thead>
                     <tr>
@@ -15,6 +17,7 @@
                         <th>Description</th>
                         <th>Qty</th>
                         <th>Price</th>
+                        <th>Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -28,6 +31,12 @@
                         <td>{{$product->desc}}</td>
                         <td>{{$product->qty}}</td>
                         <td>{{$product->price}}</td>
+                        <td>
+                        <button
+                         onclick="return confirm('Apakah Yakin Ingin Menghapus Data?') || event.stopImmediatePropagation()"
+                         wire:click="delete({{ $product->id }})" class="btn btn-danger btn-sm" style="padding: 8px 15px"><i class="fas fa-trash fa-1x"></i></button>
+                        
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

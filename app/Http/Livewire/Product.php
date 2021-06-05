@@ -13,6 +13,8 @@ class Product extends Component
 
     public $name,$category,$image,$desc,$qty,$price;
 
+   
+
     public function render()
     {
         $products = ProductModel::orderBy('created_at', 'DESC')->get();
@@ -20,6 +22,14 @@ class Product extends Component
             'products' => $products
 
         ]);
+    }
+
+    public function delete($id)
+    {
+        ProductModel::find($id)->delete();
+        
+        return redirect()->back();
+            session()->flash('message', 'deleted.');
     }
 
     public function previewImage(){

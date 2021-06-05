@@ -42,6 +42,10 @@
                 <a class="navbar-brand" href="{{ url('/kasir') }}">
                 <i class="fas fa-shopping-cart fa-sm"></i> Kasir
                 </a>
+                </a>
+                <a class="navbar-brand" href="{{ url('/transaksi') }}">
+                <i class="fas fa-save fa-sm"></i> Transaksi
+                </a>
                 @endauth
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
                     <span class="navbar-toggler-icon"></span>

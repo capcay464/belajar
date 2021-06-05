@@ -103,7 +103,7 @@ class Kasir extends Component
             
 
             if($product->qty == $cekItemId[$rowId]->quantity){
-                session()->flash('error', '*Jumlah item kurang');
+                session()->flash('error', 'Jumlah item kurang');
             } else {
                 \Cart::session(Auth()->id())->update($rowId, [
                     'quantity' => [
