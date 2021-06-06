@@ -36,7 +36,7 @@ class Kasir extends Component
     public function render()
     {
 
-        $products = ProductModel::where('name','like', '%'.$this->search.'%')->orderBy('created_at', 'DESC')->paginate(12);
+        $products = ProductModel::where('name','like', '%'.$this->search.'%')->orderBy('created_at', 'DESC')->paginate(8);
         
 
         $condition = new \Darryldecode\Cart\CartCondition([

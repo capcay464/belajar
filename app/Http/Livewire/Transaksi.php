@@ -13,21 +13,26 @@ class Transaksi extends Component
 {
 
     use WithPagination;
-
+    
     protected $paginationTheme = 'bootstrap';
 
     public function addNew(){
         $this->dispatchBrowserEvent('show-form');
+        
+        
     }
 
     public function render()
     {
 
-        $producttransactions = ProductTransactionModel::with('product')->orderBy('created_at', 'DESC')->get();
+        $producttransactions = ProductTransactionModel::with('product')->orderBy('created_at', 'DESC')->paginate(4);
         return view('livewire.Transaksi', [
             'producttransactions' => $producttransactions
         ]);
 
+        
+
        
     }
+
 }

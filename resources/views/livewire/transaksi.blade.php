@@ -6,9 +6,11 @@
             <table class="table table-bordered table-hovered table-striped">
                 <thead class="bg-primary text-white">
                     <tr>
-                        <th>No</th>
+                        
+                       
                         <th>Nama Barang</th>
                         <th>No Invoice</th>
+                        <th width="5%">Image</th>
                         <th>Total</th>
                         <th>Tanggal</th>
                         <th>Aksi</th>
@@ -18,9 +20,9 @@
                 
                 @foreach($producttransactions as $index=>$producttransaction)
                     <tr>
-                        <td>{{$index + 1}}</td>
                         <td>{{$producttransaction->product->name}}</td>
                         <td>{{$producttransaction->invoice_number}}</td>
+                        <td><img src="{{ asset('storage/images/'.$producttransaction->product->image)}}" alt="product image" class="img-fluid"></td>
                         <td>{{$producttransaction->qty}}</td>
                         <td>{{$producttransaction->created_at}}</td>
                         <td>
@@ -32,6 +34,9 @@
 
                 </tbody>
             </table>
+            <div style="display:flex;justify-content:center">
+                    {{$producttransactions->links()}}
+                </div>
             </div>
 
             <!-- Modal -->
@@ -50,15 +55,15 @@
         <table class="table table-bordered table-hovered table-striped">
                 <thead>
                     <tr>
-                        <th>No</th>
-                        <th>Nama Kasir</th>
+                        <th>No Invoice</th>
+                        <th>Nama</th>
                         <th>Bayar</th>
                         <th>Total Bayar</th>
                       
                     </tr>
                 </thead>
                 <tbody>
-               
+
 
 
                 </tbody>

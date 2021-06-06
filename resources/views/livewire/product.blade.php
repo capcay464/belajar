@@ -26,7 +26,6 @@
                         <td>{{$index + 1}}</td>
                         <td>{{$product->name}}</td>
                         <td>{{$product->category}}</td>
-                        
                         <td><img src="{{ asset('storage/images/'.$product->image)}}" alt="product image" class="img-fluid"></td>
                         <td>{{$product->desc}}</td>
                         <td>{{$product->qty}}</td>
