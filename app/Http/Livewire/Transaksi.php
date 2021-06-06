@@ -4,14 +4,30 @@ namespace App\Http\Livewire;
 
 use Livewire\Component;
 use App\Models\Transaction as TransactionModel;
+use App\Models\ProductTransaction as ProductTransactionModel;
+use App\Models\Product as ProductModel;
+
+use Livewire\WithPagination;
 
 class Transaksi extends Component
 {
+
+    use WithPagination;
+
+    protected $paginationTheme = 'bootstrap';
+
+    public function addNew(){
+        $this->dispatchBrowserEvent('show-form');
+    }
+
     public function render()
     {
-        $transactions = TransactionModel::orderBy('created_at', 'DESC')->get();
+
+        $producttransactions = ProductTransactionModel::with('product')->orderBy('created_at', 'DESC')->get();
         return view('livewire.Transaksi', [
-            'transactions' => $transactions
+            'producttransactions' => $producttransactions
         ]);
+
+       
     }
 }
