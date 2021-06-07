@@ -10,7 +10,7 @@
             <table class="table table-bordered table-hovered table-striped">
                 <thead>
                     <tr>
-                        <th>No</th>
+                        <th>ID</th>
                         <th>Name</th>
                         <th>Category</th>
                         <th width="10%">Image</th>
@@ -23,7 +23,7 @@
                 <tbody>
                 @foreach($products as $index=>$product)
                     <tr>
-                        <td>{{$index + 1}}</td>
+                        <td>{{$product->id}}</td>
                         <td>{{$product->name}}</td>
                         <td>{{$product->category}}</td>
                         <td><img src="{{ asset('storage/images/'.$product->image)}}" alt="product image" class="img-fluid"></td>
@@ -39,7 +39,11 @@
                     </tr>
                 @endforeach
                 </tbody>
+                
             </table>
+            <div style="display:flex;justify-content:center">
+                    {{$products->links()}}
+                </div>
             </div>
          </div>
 
